@@ -32,11 +32,10 @@ public class PollController {
     }
 
     @RequestMapping(value="/polls", method=RequestMethod.GET)
-    public Iterable<Poll> getAllPolls(){
-        return pollService.getAllPolls();
-//    public ResponseEntity<Iterable<Poll>> getAllPolls() {
+    public ResponseEntity<Iterable<Poll>> getAllPolls() {
+        Iterable<Poll> allPolls = pollService.getAllPolls();
 //        Iterable<Poll> allPolls = pollRepository.findAll();
-//        return new ResponseEntity<>(allPolls, HttpStatus.OK);
+        return new ResponseEntity<>(allPolls, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/polls", method = RequestMethod.POST)
@@ -54,28 +53,23 @@ public class PollController {
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
     @RequestMapping(value = "/polls/{pollId}", method = RequestMethod.GET)
-    public Optional<Poll> getPoll(@PathVariable Long pollId){
-        return pollService.getPoll(pollId);
-//    public ResponseEntity<?> getPoll(@PathVariable Long pollId){
+    public ResponseEntity<?> getPoll(@PathVariable Long pollId){
 //        verifyPoll(pollId);
-//        Optional<Poll> poll = pollRepository.findById(pollId);
-//        return new ResponseEntity<>(poll,HttpStatus.OK);
+        Optional<Poll> poll = pollService.getPoll(pollId);
+        return new ResponseEntity<>(poll,HttpStatus.OK);
     }
     @RequestMapping(value = "polls/{pollId}", method = RequestMethod.PUT)
-    public void updatePoll(@RequestBody Poll poll, @PathVariable Long pollId){
-        pollService.updatePoll(pollId, poll);
-//   public ResponseEntity<Object> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId){
+    public ResponseEntity<Object> updatePoll(@RequestBody Poll poll, @PathVariable Long pollId){
 //        verifyPoll(pollId);
-//        pollRepository.save(poll);
-//        return new ResponseEntity<>(HttpStatus.OK);
+       pollService.updatePoll(pollId, poll);
+       return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @RequestMapping(value = "/polls/{pollId}", method = RequestMethod.DELETE)
-    public void deletePoll(@PathVariable Long pollId){
+    public ResponseEntity<?> deletePoll(@PathVariable Long pollId){
         pollService.deletePoll(pollId);
-//    public ResponseEntity<?> deletePoll(@PathVariable Long pollId){
 //        pollRepository.deleteById(pollId);
-//        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
