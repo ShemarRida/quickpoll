@@ -40,17 +40,19 @@ public class PollController {
 
     @RequestMapping(value = "/polls", method = RequestMethod.POST)
     public ResponseEntity<?> createPoll(@RequestBody Poll poll){
-        poll = pollRepository.save(poll);
-
-        // Set the location header for the newly created resource
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newPollUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(poll.getId())
-                .toUri();
-        responseHeaders.setLocation(newPollUri);
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+//        poll = pollRepository.save(poll);
+//
+//        // Set the location header for the newly created resource
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        URI newPollUri = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(poll.getId())
+//                .toUri();
+//        responseHeaders.setLocation(newPollUri);
+//        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        pollService.createPoll(poll);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @RequestMapping(value = "/polls/{pollId}", method = RequestMethod.GET)
     public ResponseEntity<?> getPoll(@PathVariable Long pollId){

@@ -5,8 +5,11 @@ import com.apressbanger.quickpoll.domian.Poll;
 import com.apressbanger.quickpoll.exception.ResourceNotFoundException;
 import com.apressbanger.quickpoll.repository.PollRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @Service
@@ -38,5 +41,17 @@ public class PollService {
     public void deletePoll(Long pollId){
         verifyPoll(pollId);
         repository.deleteById(pollId);
+    }
+    public void createPoll(Poll poll){
+        poll = repository.save(poll);
+
+        // Set the location header for the newly created resource
+        HttpHeaders responseHeaders = new HttpHeaders();
+        URI newPollUri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(poll.getId())
+                .toUri();
+        responseHeaders.setLocation(newPollUri);
     }
 }
